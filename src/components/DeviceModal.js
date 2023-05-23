@@ -60,63 +60,38 @@ function DeviceModal() {
                             <h4>{!isUpdate ? 'Add New Device' : 'Edit Device'}</h4>
 
                             <div className="card p-3 mt-3">
-                                {!isUpdate ?
-                                    <form onSubmit={handleSubmit}>
-                                        <div>
-                                            <label className="form-label">Device Name</label>
-                                            <input name="deviceName" type="text" className="form-control" onChange={handleChange} required />
-                                        </div>
-                                        <br />
-                                        <div>
-                                            <label className="form-label">Device Type</label>
-                                            <select name="deviceType" className="form-select " aria-label="Default select example" onChange={handleChange} required >
-                                                <option selected disabled value="">Open this select menu</option>
-                                                <option value="Smartphone">Smartphone</option>
-                                                <option value="Tablet">Tablet</option>
-                                                <option value="Camera">Camera</option>
-                                            </select>
-                                        </div>
-                                        <br />
-                                        <div>
-                                            <label className="form-label">Owner Name</label>
-                                            <input name="ownerName" type="text" className="form-control" onChange={handleChange} required />
-                                        </div>
-                                        <br />
-                                        <div>
-                                            <label className="form-label">Battery Status <h2 className='text-danger'>{form.batteryStatus}</h2></label>
-                                            <input name="batteryStatus" type="range" className="form-range" min="0" max="100" onChange={handleChange} />
-                                        </div>
-                                        <button type="submit" className='btn btn-primary mx-auto d-block'>Save</button>
-                                    </form> :
-                                    <form onSubmit={updateDevice}>
 
-                                        <div>
-                                            <label className="form-label">Device Name</label>
-                                            <input name="deviceName" type="text" className="form-control" onChange={handleChange} defaultValue={selectedDeviceDetail.deviceName} required />
-                                        </div>
-                                        <br />
-                                        <div>
-                                            <label className="form-label">Device Type</label>
-                                            <select name="deviceType" className="form-select" aria-label="Default select example" value={selectedDeviceDetail.deviceType} onChange={handleChange} required >
-                                                <option disabled value="">Open this select menu</option>
-                                                <option value="Smartphone">Smartphone</option>
-                                                <option value="Tablet">Tablet</option>
-                                                <option value="Camera">Camera</option>
-                                            </select>
-                                        </div>
-                                        <br />
-                                        <div>
-                                            <label className="form-label">Owner Name</label>
-                                            <input name="ownerName" type="text" className="form-control" defaultValue={selectedDeviceDetail.ownerName} onChange={handleChange} required />
-                                        </div>
-                                        <br />
-                                        <div>
-                                            <label className="form-label">Battery Status <h2 className='text-danger'>{selectedDeviceDetail.batteryStatus}</h2></label>
-                                            <input name="batteryStatus" type="range" className="form-range" min="0" max="100" onChange={handleChange} />
-                                        </div>
-                                        <button type="submit" className='btn btn-success mx-auto d-block'>Update Device</button>
-                                    </form>
-                                }
+                                <form onSubmit={!isUpdate ? handleSubmit : updateDevice}>
+                                    <div>
+                                        <label className="form-label">Device Name</label>
+                                        <input name="deviceName" type="text" className="form-control" defaultValue={isUpdate ? selectedDeviceDetail.deviceName : form.deviceName} onChange={handleChange} required />
+                                    </div>
+                                    <br />
+                                    <div>
+                                        <label className="form-label">Device Type</label>
+                                        <select name="deviceType" className="form-select " aria-label="Default select example" value={isUpdate?selectedDeviceDetail.deviceType:form.deviceType} onChange={handleChange} required >
+                                            <option value="">Open this select menu</option>
+                                            <option value="Smartphone">Smartphone</option>
+                                            <option value="Tablet">Tablet</option>
+                                            <option value="Camera">Camera</option>
+                                        </select>
+                                    </div>
+                                    <br />
+                                    <div>
+                                        <label className="form-label">Owner Name</label>
+                                        <input name="ownerName" type="text" className="form-control" defaultValue={isUpdate ? selectedDeviceDetail.ownerName : form.ownerName} onChange={handleChange} required />
+                                    </div>
+                                    <br />
+                                    <div>
+                                        <label className="form-label">Battery Status <h2 className='text-danger'>{isUpdate ? selectedDeviceDetail.batteryStatus : form.batteryStatus}</h2></label>
+                                        <input name="batteryStatus" type="range" className="form-range" min="0"  max="100" onChange={handleChange} />
+                                    </div>
+                                    {
+                                    isUpdate ?
+                                        <button type="submit" className='btn btn-success mx-auto d-block'>Update Device</button>:
+                                        <button type="submit" className='btn btn-primary mx-auto d-block'>Save</button>
+                                    }
+                                </form>
                             </div>
                         </div>
                         <div className="modal-footer">

@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from 'react';
 import DeviceContext from '../context/DeviceContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPen, faTrashCan, faSpinner,faSort } from '@fortawesome/free-solid-svg-icons'
+import { faPen, faTrashCan, faSpinner, faSort } from '@fortawesome/free-solid-svg-icons'
 
 
 function DeviceList() {
@@ -30,24 +30,28 @@ function DeviceList() {
   }
 
 
-useEffect(() => {
+  useEffect(() => {
     fetchData()
   }, [])
 
-  const fetchData = () =>{
-    fetch('http://localhost:8080/api', {
+  const fetchData = async () => {
+    try{
+      await fetch('http://localhost:8080/api', {
       method: "GET"
-    }).then(res => res.json()).
-      then((data) => {
+    }).then(res => res.json())
+      .then((data) => {
         setDevice(data);
         setIsLoading(false)
       })
+    }catch(error){
+      console.log(error);
+    }
   }
 
   const sortDevice = (e) => {
     let name = e.target.name
     let temp = [...data]
-    temp.sort((a, b) => typeof a[name]=='string' ?  a[name].localeCompare(b[name]) : (a[name] < b[name] ? -1 : a[name] > b[name] ? 1 : 0))
+    temp.sort((a, b) => typeof a[name] == 'string' ? a[name].localeCompare(b[name]) : (a[name] < b[name] ? -1 : a[name] > b[name] ? 1 : 0))
     JSON.stringify(temp) === JSON.stringify(data) && temp.reverse()
     setDevice(temp)
   }
@@ -60,10 +64,10 @@ useEffect(() => {
           <thead>
             <tr>
               <th scope="col">#</th>
-              <th scope="col"><a name="deviceName" onClick={(e) => sortDevice(e)}><FontAwesomeIcon icon={faSort} />  Device Name </a></th>
-              <th scope="col"><a name="deviceType" onClick={(e) => sortDevice(e)}><FontAwesomeIcon icon={faSort} />  Device Type</a></th>
-              <th scope="col"><a name="ownerName" onClick={(e) => sortDevice(e)}><FontAwesomeIcon icon={faSort} />  Owner Name</a></th>
-              <th scope="col"><a name="batteryStatus" onClick={(e) => sortDevice(e)}><FontAwesomeIcon icon={faSort} />  Battery Status</a></th>
+              <th name="deviceName" onClick={(e) => sortDevice(e)} scope="col"><FontAwesomeIcon icon={faSort} />  Device Name</th>
+              <th name="deviceType" onClick={(e) => sortDevice(e)} scope="col"><FontAwesomeIcon icon={faSort} />  Device Type</th>
+              <th name="ownerName" onClick={(e) => sortDevice(e)} scope="col"><FontAwesomeIcon icon={faSort} />  Owner Name</th>
+              <th name="batteryStatus" onClick={(e) => sortDevice(e)} scope="col"><FontAwesomeIcon icon={faSort} />  Battery Status</th>
             </tr>
           </thead>
           <tbody>
